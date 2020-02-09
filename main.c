@@ -14,10 +14,10 @@ void port_init(void){
 	RCC->APB2ENR |= RCC_APB2ENR_IOPAEN | RCC_APB2ENR_AFIOEN;	// GPIOA Clock ON. Alter function clock ON
 	
 
-	GPIOA->CRH &= ~(GPIO_CRH_MODE9 | GPIO_CRH_CNF9);		//PA2 на выход
+	GPIOA->CRH &= ~(GPIO_CRH_MODE9 | GPIO_CRH_CNF9);		//PA2 as output
 	GPIOA->CRH |= (GPIO_CRH_MODE9_1 | GPIO_CRH_CNF9_1);
 
-	GPIOA->CRH &= ~(GPIO_CRH_MODE10 | GPIO_CRH_CNF10);		//PA3 - вход
+	GPIOA->CRH &= ~(GPIO_CRH_MODE10 | GPIO_CRH_CNF10);		//PA3 as input
 	GPIOA->CRH |= GPIO_CRH_CNF10_0;
 	
 	RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
@@ -41,13 +41,15 @@ void usart_init(void){
 }
 
 void USART1_IRQHandler(void){
-	char tmp = USART1->DR;
-	if (tmp > 31 && tmp < 127)		//Прерывание по приёму данных?
-		{
-			RxBuffer[strlen(RxBuffer)] = tmp;
-	 }
-	else if (tmp == 10)
-		ComReceived = true;
+	if ((USART2->SR & USART_SR_RXNE)!=0){
+		char tmp = USART1->DR;
+		if (tmp > 31 && tmp < 127)		
+			{
+				RxBuffer[strlen(RxBuffer)] = tmp;
+		 }
+		else if (tmp == 10)
+			ComReceived = true;
+	}
 }
 
 void rtc_init(void){
