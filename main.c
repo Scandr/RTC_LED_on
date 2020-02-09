@@ -5,7 +5,7 @@ void delay(uint32_t takts);
 char tmp;
 bool ComReceived = false;
 char RxBuffer[BUFF_SIZE];
-char TxBuffer[BUFF_SIZE];
+
 uint32_t alarm_start;
 uint32_t alarm = 0;
 
@@ -23,7 +23,7 @@ void port_init(void){
 	RCC->APB2ENR |= RCC_APB2ENR_IOPCEN;
 	GPIOC->CRH = 0;
 	GPIOC->CRL = 0;
-	GPIOC->CRL |= GPIO_CRL_MODE7_1;
+	
 	GPIOC->CRH |= GPIO_CRH_MODE8_1;
 	GPIOC->CRH |= GPIO_CRH_MODE9_1;
 }
@@ -99,9 +99,7 @@ uint32_t str_to_dgt(char *str){
 }
 
 void command(void){
-	memset(TxBuffer, 0, TX_BUFF_SIZE);
-	char s[BUFF_SIZE];
-	
+
 	if (strncmp(RxBuffer,"ALARM",5) == 0){
 		alarm = str_to_dgt(RxBuffer);
 	}
