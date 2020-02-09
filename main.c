@@ -1,6 +1,12 @@
 #include "main.h"
 
 void delay(uint32_t takts);
+void port_init(void);
+void usart_init(void);
+void rtc_init(void);
+void rtc_conf(void);
+uint32_t str_to_dgt(char *str);
+void command(void);
 
 char tmp;
 bool ComReceived = false;
